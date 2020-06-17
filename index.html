@@ -128,9 +128,6 @@
             let txt_caseid = $('input#txt_caseid').val();
             let txt_tagger = $('input#txt_tagger').val();
             let txt_caseindex = $('input#txt_caseindex').val();
-
-
-
             let strXmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
 <document>
 <head>
@@ -184,7 +181,10 @@
         </document>`;
 
             uriContent = "data:application/octet-stream," + encodeURIComponent(strXmlTemplate);
-            newWindow = window.open(uriContent, 'newDocument');
+            var link = document.createElement("a");
+            link.href = uriContent;
+            link.download = "output.xml";
+            link.click();
         });
 
         function getInputSelection(el) {
