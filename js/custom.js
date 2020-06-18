@@ -49,6 +49,13 @@ $('input#btnImport').on('change', function(evt){
     var reader = new FileReader();
     reader.onload = function(e) {
         var text = e.target.result;
+        let parser = new DOMParser();
+        xmlDoc = parser.parseFromString(text,"text/xml");
+        if( xmlDoc.documentElement.nodeName != 'document' ){
+            alert('請匯入正確的 xml 格式');
+            return false;
+        }
+
         $('textarea#txtContext').val(text);
     }
     reader.readAsText(file);
@@ -75,13 +82,13 @@ $('button#btnExport').on('click', function(){
     // strXmlTemplate = strXmlTemplate.replace(/\n/gm, "");
 
     let strXML = $('textarea#txtContext').val();
-    parser = new DOMParser();
+    let parser = new DOMParser();
     xmlDoc = parser.parseFromString(strXML,"text/xml");
     xmlDoc.getElementsByTagName("caseid")[0].childNodes[0].nodeValue = txt_caseid;
     xmlDoc.getElementsByTagName("tagger")[0].childNodes[0].nodeValue = txt_tagger;
     xmlDoc.getElementsByTagName("caseindex")[0].childNodes[0].nodeValue = txt_caseindex;
     let strXmlTemplate = (new XMLSerializer()).serializeToString(xmlDoc);
-    strXmlTemplate = strXmlTemplate.replace(/\n/gm, "");
+    // strXmlTemplate = strXmlTemplate.replace(/\n/gm, "");
 
     if(navigator.platform == 'Win32'){
         uriContent = "data:application/octet-stream," + encodeURIComponent(strXmlTemplate);
